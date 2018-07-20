@@ -5,17 +5,32 @@
     <title>WebSockets - Simple game</title>
     <link rel="stylesheet" href="libs/css/bootstrap.css">
     <script src="./libs/jquery.js"></script>
-    <script src="./libs/connection.js"></script>
+    <script src="libs/lodash.js"></script>
+    <script type="module" src="libs/index.js"></script>
 </head>
 <body>
     <div class="container">
-        <div class="row">
-            <div class="col-sm text-center">
-                <button type="button" class="btn btn-primary mt-5" onclick="iAmHost()">Anfitrión</button>
+        <div class="row mb-5">
+            <div class="col-sm-12 text-center mt-5">
+                <h1>50 x 15</h1>
             </div>
             <div class="col-sm text-center">
-                <button type="button" class="btn btn-secondary mt-5" onclick="iAmContestant()">Concursante</button>
-            </div>           
+                <button type="button" class="btn btn-primary mt-5" id="game0master">Maestro</button>
+            </div>
+            <div class="col-sm text-center">
+                <button type="button" class="btn btn-secondary mt-5" id="game0slave">Esclavo</button>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-sm-12 text-center mt-5">
+                <h1>Pasapalabra</h1>
+            </div>
+            <div class="col-sm text-center">
+                <button type="button" class="btn btn-primary mt-5" id="game1master">Maestro</button>
+            </div>
+            <div class="col-sm text-center">
+                <button type="button" class="btn btn-secondary mt-5" id="game1slave">Esclavo</button>
+            </div>
         </div>
     </div>
 </body>

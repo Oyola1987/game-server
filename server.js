@@ -18,7 +18,7 @@ app.get('/*', (req, res) => {
     });    
 });
 
-app.listen(4000, () => console.log('Listening on port 4000!'))
+app.listen(4000, () => console.log('http://localhost:4000'))
 
 var server = http.createServer(function (request, response) {
     console.log((new Date()) + ' Received request for ' + request.url);
@@ -63,19 +63,19 @@ wsServer.on('request', function (request) {
 
     connections.push(connection);
 
-    console.log((new Date()) + ' Connection accepted.');
+    console.log((new Date()) + ' Connection accepted.', connections.length);
 
     connection.on('message', function (message) {
-        // console.log('message ', message);
+        console.log('message ', message);
         const data = getMessage(message);
 
-        if (data.initialize) {
-            const redirect = data.initialize === 'host' ? 'contestant' : 'host';
-
+        if (data.redirect) {
             connections.forEach((con) => {
-                con.sendUTF(JSON.stringify({
-                    redirect: (con.sessionId === connection.sessionId ? data.initialize : redirect) + '.html'
-                }));
+                if (con.sessionId !== connection.sessionId) {
+                    con.sendUTF(JSON.stringify({
+                        redirect: data.redirect
+                    }));
+                }                
             });
         } else if (data.destroy) {
             const index = connections.findIndex((con) => {
