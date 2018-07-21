@@ -48,7 +48,7 @@ const getMessage = (message) => {
         data = message.binaryData;
     }
 
-    return JSON.parse(data);
+    return data;
 };
 
 wsServer.on('request', function (request) {
@@ -63,31 +63,23 @@ wsServer.on('request', function (request) {
 
     connections.push(connection);
 
-    console.log((new Date()) + ' Connection accepted.', connections.length);
+    console.log('Connection accepted.', connection.sessionId, connections.length);
 
     connection.on('message', function (message) {
-        console.log('message ', message);
         const data = getMessage(message);
 
-        if (data.redirect) {
-            connections.forEach((con) => {
-                if (con.sessionId !== connection.sessionId) {
-                    con.sendUTF(JSON.stringify({
-                        redirect: data.redirect
-                    }));
-                }                
-            });
-        } else if (data.destroy) {
-            const index = connections.findIndex((con) => {
-                return con.sessionId === connection.sessionId;
-            });            
-            
-            connections.splice(index, 1);
-            connection.close();
-        }
+        connections.forEach((con) => {        
+            con.sendUTF(data);
+        });
     });
 
     connection.on('close', function (reasonCode, description) {
-        console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
+        const index = connections.findIndex((con) => {
+            return con.sessionId === connection.sessionId;
+        });
+
+        connections.splice(index, 1);
+        connection.close();
+        console.log('Connection closed =>', connection.sessionId, connections.length);
     });
 });

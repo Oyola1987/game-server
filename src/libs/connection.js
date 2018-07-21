@@ -1,18 +1,15 @@
-function Connection() {
+function Connection(cb) {
     const connection = new WebSocket('ws://localhost:4001', "echo-protocol");
-    const that = this;
-    const send = function (data) {
-        that.connection.send(JSON.stringify(data));
-    };
+    const that = this;    
 
-    //connection.onopen = function (data) {
-    //    if(/^\S+:\/\/\S+:\d+(\/|)$/g.test(location.href)){
-    //        console.log('should redirect to =>', `${location.href}#redirected`);
-    //        send({                            
-    //            redirect: `${location.href}#redirected`,
-    //        });
-    //    }
-    //};
+    this.__events = {};
+
+    connection.onopen = function (data) {
+        console.log('onopen', data);
+        if (typeof cb === 'function') {
+            cb();
+        }
+    };
 
     connection.onerror = function (error) {
         console.log('onerror', error);
@@ -21,28 +18,26 @@ function Connection() {
     connection.onmessage = function (message) {
         const data = JSON.parse(message.data);
 
-        if (data.redirect) {    
-            connection.onclose = function (error) {
-                // console.log('onclose', error);
-                location.href = data.redirect;
-            };
-            send({
-                destroy: true
-            });                
+        if (data.event && that.__events[data.event]) {
+            that.__events[data.event](data);
         }
     };
 
-    this.connection = connection;
+    this.listen = function (event, cb) {
+        that.__events[event] = cb;
+    };  
 
-    this.send = function (opts) {
-        send(opts);
+    this.unlisten = function (event) {
+        delete that.__events[event];
+    };
+
+    this.send = function (data) {
+        connection.send(JSON.stringify(data));
     }
 
-    this.destroy = function (mg) {
-        send({
-            destroy: true
-        });
-    }
+    this.close = function () {
+        connection.close();
+    };
 };
 
 export default Connection;
