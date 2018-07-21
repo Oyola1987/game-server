@@ -4,12 +4,12 @@ function Connection(cb) {
 
     this.__events = {};
 
-    connection.onopen = function (data) {
-        console.log('onopen', data);
-        if (typeof cb === 'function') {
+    if (typeof cb === 'function') {        
+        connection.onopen = function (data) {
             cb();
-        }
-    };
+        };
+    }
+    
 
     connection.onerror = function (error) {
         console.log('onerror', error);
