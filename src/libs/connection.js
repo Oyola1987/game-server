@@ -1,16 +1,16 @@
-function Connection(cb) {
-    const connection = new WebSocket('ws://localhost:4001', "echo-protocol");
+function Connection(ready) {
+    const host = location.host;
+    const connection = new WebSocket('ws://' + host, "echo-protocol");
     const that = this;    
 
     this.__events = {};
 
-    if (typeof cb === 'function') {        
+    if (typeof ready === 'function') {        
         connection.onopen = function (data) {
-            cb();
+            ready();
         };
     }
     
-
     connection.onerror = function (error) {
         console.log('onerror', error);
     };
