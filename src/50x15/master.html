@@ -6,15 +6,26 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>50x15 - Master</title>
+    <link rel="stylesheet" href="../libs/css/bootstrap.css">
+
     <script src="../libs/jquery.js"></script>
     <script src="../libs/lodash.js"></script>
-    <script type="module" src="../libs/common.js">
-    </script>
+    <script type="module" src="../libs/common.js"></script>
+    <script type="module" src="./master.js"></script>
 </head>
 <body>
-    <h1>50x15 - Master</h1>
-    <div id="content"></div>
-    <div>
+   
+    <div class="container">
+        <div class="row mb-2">
+            <div class="col-sm-12 mt-2 text-center">
+                <h6>50x15 - Master</h6>
+            </div>
+        </div>
+        <div class="row mt-2" id="btns-ask">
+        </div>
+
+        <div class="row mt-2" id="btns-detail">
+        </div>
     </div>
 </body>
 </html>

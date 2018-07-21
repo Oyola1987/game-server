@@ -1,4 +1,4 @@
-import Connection from './connection.js';
+import Connection from './libs/connection.js';
 
 const connection = new Connection(() => {
     connection.send({
