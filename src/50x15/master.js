@@ -41,7 +41,7 @@ const resultButtons = (number) => {
             return: true
         });
 
-        content += `<div class="col-sm-6 mb-5 text-center">
+        content += `<div class="col-sm-6 mt-5 text-center">
             <button type="button" class="btn btn-${item.class} text-capitalize" id="${id}">${item.text}</button>
         </div>`
     });
@@ -50,9 +50,9 @@ const resultButtons = (number) => {
 };
 
 const selectedButtons = (number, options) => {
-    let content = '';
+    let content = `<div class="mb-3 col-sm-12"><h5>${options.question}</h5></div>`;
 
-    responseOptions.forEach((item) => {
+    responseOptions.forEach((item, i) => {
         const id = `${item}-option${number}`;
 
         events.push({
@@ -60,8 +60,8 @@ const selectedButtons = (number, options) => {
             event: 'selected',
             data: item
         });
-        content += `<div class="col-sm-9"><p><span class="text-uppercase">${item}: </span>${options.question}</p></div>`;
 
+        content += `<div class="col-sm-9"><p><span class="text-uppercase">${item}: </span>${options.answers[i]}</p></div>`;
         content += `<div class="col-sm-3 mb-3 text-right">
             <button type="button" class="btn btn-info text-capitalize" id="${id}">Seleccionar <span class="text-uppercase">${item}</span></button>
         </div>`
@@ -81,7 +81,7 @@ const cleanEvents = () => {
 const showDetails = (number, message) => {
     cleanEvents();
     const el = $('#btns-detail');    
-    const content = resultButtons(number) + selectedButtons(number, message);
+    const content = selectedButtons(number, message) + resultButtons(number);
 
     el.html(content);
 
