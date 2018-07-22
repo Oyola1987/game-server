@@ -26,5 +26,6 @@ $(document).ready(function () {
 });
 
 export {
-    connection, audio
+    connection, 
+    audio
 };

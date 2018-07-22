@@ -17,4 +17,8 @@ $(document).ready(function () {
     connection.listen('selected', (data) => {
         console.log('selected =>', data);
     });
+
+    connection.listen('back', (data) => {
+        console.log('back =>', data);
+    });
 });

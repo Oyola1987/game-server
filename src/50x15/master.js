@@ -2,6 +2,10 @@ import {connection} from '../libs/common.js';
 
 const responseOptions = ['a', 'b', 'c', 'd'];
 const detailsBtn = [{
+    text: 'Volver',
+    class: 'secondary',
+    event: 'back'
+}, {
     text: 'Acierto',
     class: 'success',
     event: 'correct'
@@ -13,6 +17,15 @@ const detailsBtn = [{
 
 let events = [];
 
+const questionResolved = (number, className) => {
+    const id = `ask${number}`;
+    const el = $(`#${id}`);
+
+    el.removeClass('btn-primary');
+    el.addClass('btn-' + className);
+    el.unbind('click');
+};
+
 const clickEvent = () => {
     events.forEach(item => {
         $(`#${item.id}`).bind('click', () => {
@@ -21,36 +34,44 @@ const clickEvent = () => {
                 data: item.data
             });
 
+            if (item.resolved) {
+                questionResolved(item.resolved, item.className);
+            }
+
             if (item.return) {
                 $('#btns-detail').hide();
                 $('#btns-ask').show();
-            }
+            }           
         });
     });
 };
 
-const resultButtons = (number) => {
+const resultButtons = (number, options) => {
     let content = '';
 
     detailsBtn.forEach((item) => {
         const id = `${item.class}${number}`;
+        const text = (item.class === 'success' ? `(${options.response}) ` : '') + `${item.text}`;
 
         events.push({
             id: id,
-            event: item.event || item.class,
+            resolved: item.event === 'back' ? '' : number,
+            event: item.event,
+            data: number,
+            className: item.class,
             return: true
         });
 
-        content += `<div class="col-sm-6 mt-5 text-center">
-            <button type="button" class="btn btn-${item.class} text-capitalize" id="${id}">${item.text}</button>
-        </div>`
+        content += `<div class="col-sm-4 mt-5 text-center">
+            <button type="button" class="btn btn-${item.class} text-capitalize" id="${id}">${text}</button>
+        </div>`;
     });
 
     return content;
 };
 
 const selectedButtons = (number, options) => {
-    let content = `<div class="mb-3 col-sm-12"><h5>${options.question}</h5></div>`;
+    let content = `<div class="mb-3 col-sm-12"><h5>${number}: ${options.question}</h5></div>`;
 
     responseOptions.forEach((item, i) => {
         const id = `${item}-option${number}`;
@@ -81,9 +102,9 @@ const cleanEvents = () => {
 const showDetails = (number, message) => {
     cleanEvents();
     const el = $('#btns-detail');    
-    const content = selectedButtons(number, message) + resultButtons(number);
 
-    el.html(content);
+    el.html(selectedButtons(number, message));
+    el.append(resultButtons(number, message));
 
     clickEvent();
 
@@ -99,7 +120,7 @@ $(document).ready(function () {
 
         el.append(`<div class="col-sm-2 mb-3 text-center"><button type="button" class="btn btn-primary" id="${id}">${item}</button></div>`);
 
-        $(`#${id}`).click(() => {
+        $(`#${id}`).bind('click', () => {
             const msg = {                
                 event: 'question',
                 item: item,
@@ -108,7 +129,9 @@ $(document).ready(function () {
             };
 
             el.hide();
-            showDetails(item, msg);
+            showDetails(item, Object.assign({
+                response: 'a'
+            }, msg));
             connection.send(msg);
         });
     });
