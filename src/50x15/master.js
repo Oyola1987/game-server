@@ -1,13 +1,14 @@
-import connection from '../libs/common.js';
+import {connection} from '../libs/common.js';
 
 const responseOptions = ['a', 'b', 'c', 'd'];
 const detailsBtn = [{
     text: 'Acierto',
-    class: 'success'
+    class: 'success',
+    event: 'correct'
 }, {
     text: 'Fallo',
     class: 'danger',
-    event: 'error'
+    event: 'wrong'
 }];
 
 let events = [];
@@ -48,7 +49,7 @@ const resultButtons = (number) => {
     return content;
 };
 
-const selectedButtons = (number) => {
+const selectedButtons = (number, options) => {
     let content = '';
 
     responseOptions.forEach((item) => {
@@ -59,8 +60,9 @@ const selectedButtons = (number) => {
             event: 'selected',
             data: item
         });
+        content += `<div class="col-sm-9"><p><span class="text-uppercase">${item}: </span>${options.question}</p></div>`;
 
-        content += `<div class="col-sm-3 mb-3 text-center">
+        content += `<div class="col-sm-3 mb-3 text-right">
             <button type="button" class="btn btn-info text-capitalize" id="${id}">Seleccionar <span class="text-uppercase">${item}</span></button>
         </div>`
     });
@@ -76,10 +78,10 @@ const cleanEvents = () => {
     events = [];
 };
 
-const showDetails = (number) => {
+const showDetails = (number, message) => {
     cleanEvents();
     const el = $('#btns-detail');    
-    const content = resultButtons(number) + selectedButtons(number);
+    const content = resultButtons(number) + selectedButtons(number, message);
 
     el.html(content);
 
@@ -98,15 +100,16 @@ $(document).ready(function () {
         el.append(`<div class="col-sm-2 mb-3 text-center"><button type="button" class="btn btn-primary" id="${id}">${item}</button></div>`);
 
         $(`#${id}`).click(() => {
-
-            el.hide();
-            showDetails(item);
-            connection.send({                
+            const msg = {                
                 event: 'question',
                 item: item,
                 question: 'Loram ipsum',
                 answers: ['aa', 'bb', 'cc', 'dd']
-            });
+            };
+
+            el.hide();
+            showDetails(item, msg);
+            connection.send(msg);
         });
     });
 
