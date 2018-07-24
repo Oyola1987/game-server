@@ -2,7 +2,7 @@ import { connection, audio, video } from '../libs/common.js';
 
 
 $(document).ready(function () {   
-    video('videos/intro');
+    // video('videos/intro');
     // play();
     connection.listen('question', (data) => {
         console.log('question =>', data);

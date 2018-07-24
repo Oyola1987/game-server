@@ -116,7 +116,7 @@ $(document).ready(function () {
     range.forEach(item => {
         const id = `ask${item}`;
 
-        el.append(`<div class="col-2 mb-3 text-center"><button type="button" class="btn btn-primary" id="${id}">${item}</button></div>`);
+        el.append(`<div class="col-2 mb-3 text-center"><button type="button" class="btn btn-light" id="${id}">${item}</button></div>`);
 
         $(`#${id}`).bind('click', () => {
             const msg = {                
