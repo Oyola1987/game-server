@@ -18,12 +18,10 @@ const detailsBtn = [{
 let events = [];
 
 const questionResolved = (number, className) => {
-    const id = `ask${number}`;
-    const el = $(`#${id}`);
+    const el = $(`#ask${number}`);
 
-    el.removeClass('btn-primary');
-    el.addClass('btn-' + className);
-    el.unbind('click');
+    el.removeAttr('class');
+    el.addClass('btn btn-' + className);
 };
 
 const clickEvent = () => {
@@ -59,10 +57,10 @@ const resultButtons = (number, options) => {
             event: item.event,
             data: number,
             className: item.class,
-            return: true
+            return: item.event === 'back'
         });
 
-        content += `<div class="col-sm-4 mt-5 text-center">
+        content += `<div class="col-4 mt-5 text-center">
             <button type="button" class="btn btn-${item.class} text-capitalize" id="${id}">${text}</button>
         </div>`;
     });
@@ -71,7 +69,7 @@ const resultButtons = (number, options) => {
 };
 
 const selectedButtons = (number, options) => {
-    let content = `<div class="mb-3 col-sm-12"><h5>${number}: ${options.question}</h5></div>`;
+    let content = `<div class="mb-3 col-12"><h5>${number}: ${options.question}</h5></div>`;
 
     responseOptions.forEach((item, i) => {
         const id = `${item}-option${number}`;
@@ -82,8 +80,8 @@ const selectedButtons = (number, options) => {
             data: item
         });
 
-        content += `<div class="col-sm-9"><p><span class="text-uppercase">${item}: </span>${options.answers[i]}</p></div>`;
-        content += `<div class="col-sm-3 mb-3 text-right">
+        content += `<div class="col-9"><p><span class="text-uppercase">${item}: </span>${options.answers[i]}</p></div>`;
+        content += `<div class="col-3 mb-3 text-right">
             <button type="button" class="btn btn-info text-capitalize" id="${id}">Seleccionar <span class="text-uppercase">${item}</span></button>
         </div>`
     });
@@ -118,7 +116,7 @@ $(document).ready(function () {
     range.forEach(item => {
         const id = `ask${item}`;
 
-        el.append(`<div class="col-sm-2 mb-3 text-center"><button type="button" class="btn btn-primary" id="${id}">${item}</button></div>`);
+        el.append(`<div class="col-2 mb-3 text-center"><button type="button" class="btn btn-primary" id="${id}">${item}</button></div>`);
 
         $(`#${id}`).bind('click', () => {
             const msg = {                

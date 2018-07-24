@@ -1,0 +1,20 @@
+body {
+    background: url("./images/bg.jpg") no-repeat center center;
+    background-size: auto;
+}
+
+video {
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.icons-wild-card  {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
