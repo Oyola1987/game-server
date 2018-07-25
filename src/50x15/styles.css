@@ -12,9 +12,15 @@ video {
     left: 0;
 }
 
-.icons-wild-card  {
+.icons-wild-card, .responses-list {
     position: absolute;
     top: 0;
+}
+
+.icons-wild-card {
     right: 0;
 }
 
+.responses-list {
+    left: 0;
+}

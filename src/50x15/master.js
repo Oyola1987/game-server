@@ -1,6 +1,6 @@
-import {connection} from '../libs/common.js';
+import { connection } from '../libs/common.js';
+import { responseOptions, wildCardsIds, range } from './common.js';
 
-const responseOptions = ['a', 'b', 'c', 'd'];
 const detailsBtn = [{
     text: 'Volver',
     class: 'secondary',
@@ -109,8 +109,7 @@ const showDetails = (number, message) => {
     el.show();
 };
 
-$(document).ready(function () {   
-    const range = _.range(1, 16);
+const createQuestions = () => {
     const el = $('#btns-ask');
 
     range.forEach(item => {
@@ -119,7 +118,7 @@ $(document).ready(function () {
         el.append(`<div class="col-2 mb-3 text-center"><button type="button" class="btn btn-light" id="${id}">${item}</button></div>`);
 
         $(`#${id}`).bind('click', () => {
-            const msg = {                
+            const msg = {
                 event: 'question',
                 item: item,
                 question: 'Loram ipsum',
@@ -133,5 +132,24 @@ $(document).ready(function () {
             connection.send(msg);
         });
     });
+};
 
+const wildCards = () => {
+    wildCardsIds.forEach(item => {
+        const id = `#wildcard-${item}`;
+
+        $(id).bind('click', () => {
+            connection.send({
+                event: 'wildcard',
+                data: item
+            });
+
+            $(id).unbind('click');
+        });
+    });
+};
+
+$(document).ready(function () {   
+    createQuestions();
+    wildCards();
 });
