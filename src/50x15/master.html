@@ -11,33 +11,37 @@
 
     <script src="../libs/jquery.js"></script>
     <script src="../libs/lodash.js"></script>
-    <script type="module" src="../libs/common.js"></script>
-    <script type="module" src="./master.js"></script>
+    <script type="module" src="../libs/common.js">
+    </script>
+    <script type="module" src="./master.js">
+    </script>
 </head>
 <body>
-   
+    <div class="row ml-2 mt-2 questions-list responses-list"></div>
+
+    <div class="row mr-2 mt-3 icons-wild-card">
+        <div class="col-12 mb-3 text-right">
+            <button type="button" class="btn btn-light c-pointer" id="back-btn">Volver</button>
+        </div>
+        <div class="col-12 mt-2 text-right">
+            <img id="wildcard-50" class="img-fluid c-pointer" src="./images/icon-50.png" />
+        </div>
+        <div class="col-12 mt-2 text-right">
+            <img id="wildcard-phone" class="img-fluid c-pointer" src="./images/icon-phone.png" />
+        </div>
+        <div class="col-12 mt-2 text-right">
+            <img id="wildcard-public" class="img-fluid c-pointer" src="./images/icon-public.png" />
+        </div>
+    </div>
     <div class="container">
         <div class="row mb-2">
-            <div class="col-sm-12 mt-2 text-center">
-                <h6>50x15 - Master</h6>
+            <div class="col-12 mt-2 text-center">
+                <img class="img-fluid" src="./images/logo.png" />
             </div>
-        </div>
-        <div class="row mt-2" id="btns-ask">
         </div>
 
-        <div class="row mt-2" id="btns-detail">
-        </div>
+        <div id="question-contain">
 
-        <div class="row mt-2 details-ask" id="icons-wild-card">
-            <div class="col-4 mt-2 text-center">
-                <img id="wildcard-50" class="img-fluid" src="./images/icon-50.png" />
-            </div>
-            <div class="col-4 mt-2 text-center">
-                <img id="wildcard-phone" class="img-fluid" src="./images/icon-phone.png" />
-            </div>
-            <div class="col-4 mt-2 text-center">
-                <img id="wildcard-public" class="img-fluid" src="./images/icon-public.png" />
-            </div>
         </div>
     </div>
 </body>

@@ -8,7 +8,7 @@ const audio = (src) => {
         el.remove();
     }
 
-    sound = document.createElement("audio");
+    const sound = document.createElement("audio");
     sound.id = 'sounds'
     sound.src = src + '.mp3';
     sound.setAttribute("preload", "auto");
@@ -16,6 +16,7 @@ const audio = (src) => {
     sound.style.display = "none";
     document.body.appendChild(sound);    
     sound.play();
+    return sound;
 };
 
 const video = (src) => {

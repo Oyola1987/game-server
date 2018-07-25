@@ -15,12 +15,40 @@ video {
 .icons-wild-card, .responses-list {
     position: absolute;
     top: 0;
+    z-index: 2;
 }
 
 .icons-wild-card {
     right: 0;
 }
 
+.icons-wild-card .used{
+    opacity: 0.3;
+}
+
 .responses-list {
     left: 0;
+}
+
+.square-bg {
+    background: url("./images/question-bg.png") center;
+}
+
+.square.bg-warning strong, .square.bg-success strong, .square.bg-danger strong {
+    color: #fff !important;
+}
+
+.c-pointer {
+    cursor: pointer;
+    z-index: 3;
+}
+
+.square {
+    -webkit-clip-path: polygon(5% 0, 95% 0, 100% 50%, 95% 100%, 5% 100%, 0 50%);
+    clip-path: polygon(5% 0, 95% 0, 100% 50%, 95% 100%, 5% 100%, 0 50%);
+}
+
+.square-item {
+    -webkit-clip-path: polygon(10% 0, 90% 0, 100% 50%, 90% 100%, 10% 100%, 0 50%);
+    clip-path: polygon(10% 0, 90% 0, 100% 50%, 90% 100%, 10% 100%, 0 50%);
 }
