@@ -89,9 +89,7 @@ const createQuestions = () => {
 };
 
 const alertConfirm = (text, cb) => {    
-    const response = confirm(text);
-
-    if (response === true) {
+    if (confirm(text)) {
         cb();        
     } 
 };
@@ -113,15 +111,23 @@ const wildCards = () => {
     });
 };
 
+const resetSelectedItem = () => {
+    responseOptions.forEach(item => {
+        const el = $(`#option-${item}`);
+
+        el.removeClass('bg-warning bg-danger bg-success');
+        el.addClass('square-bg');
+    });
+};
+
 const showQuestion = (data, answer) => {
     const el = $('#question-contain');
     const answers = data.answers.map((item, index) => {
         const option = responseOptions[index];
         const className = answer === option ? 'text-success' : '';
-        const letterClassName = className || 'text-warning';
 
         return `<div class="col-6 mt-2 text-center square square-item square-bg c-pointer" id="option-${option}">
-            <p class="${className}"><strong class="text-uppercase mr-2 ${letterClassName}">${option} : </strong>${item}</p>
+            <p class="${className}"><strong class="text-uppercase mr-2 ${className}">${option} : </strong>${item}</p>
         </div>`;
     });
 
@@ -133,15 +139,35 @@ const showQuestion = (data, answer) => {
         </div>`);
 };
 
-const listeningOptions = () => {
+const listeningOptions = (options, answer) => {
     responseOptions.forEach((option) => {
-        $(`#option-${option}`).bind('click', () => {
-            alertConfirm(`¿Quieres elegir la opción: "${option.toUpperCase()}"?`, () => {
-                connection.send({
-                    event: 'selected',
-                    data: option
+        const el = $(`#option-${option}`);
+
+        el.bind('click', () => {
+            if(el.hasClass('bg-warning')) {
+                alertConfirm(`¿Quieres que la opción "${option.toUpperCase()}" sea tu respuesta definitiva?`, () => {
+                    const optionSelected = el.attr('id').replace('option-', '');
+                    
+                    connection.send({
+                        event: optionSelected === answer ? 'correct' : 'wrong',
+                        data: {
+                            item: options.item,
+                            answer: answer
+                        },
+                    });
                 });
-            });
+            } else {
+                alertConfirm(`¿Quieres elegir la opción: "${option.toUpperCase()}"?`, () => {
+                    resetSelectedItem();
+                    el.addClass('bg-warning');
+                    el.removeClass('square-bg');
+
+                    connection.send({
+                        event: 'selected',
+                        data: option
+                    });
+                });
+            }            
         });
     });
 };
@@ -169,7 +195,7 @@ const createQuestionsStatus = () => {
             };
 
             showQuestion(msg, quest.answer);
-            listeningOptions();
+            listeningOptions(msg, quest.answer);
             connection.send(msg);
         });
     });

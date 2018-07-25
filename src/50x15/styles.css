@@ -34,8 +34,12 @@ video {
     background: url("./images/question-bg.png") center;
 }
 
+.square strong {
+    color: #ffc107;
+}
+
 .square.bg-warning strong, .square.bg-success strong, .square.bg-danger strong {
-    color: #fff !important;
+    color: #fff;
 }
 
 .c-pointer {

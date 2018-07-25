@@ -53,7 +53,7 @@ const showQuestion = (data) => {
         const option = responseOptions[index];
 
         return `<div class="col-6 mt-2 text-center square square-item square-bg" id="option-${option}">
-            <p><strong class="text-uppercase text-warning mr-2">${option} : </strong>${item}</p>
+            <p><strong class="text-uppercase mr-2">${option} : </strong>${item}</p>
         </div>`;
     });
 
