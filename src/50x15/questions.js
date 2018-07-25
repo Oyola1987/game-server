@@ -22,16 +22,17 @@ const questions = [
     ]
 },
 {
-    order: 3,
-    question: '¿En que año murió Walt Disney?',
-    answer: 'c',
+    order: 4,
+    question: '¿A qué se dedica Chuck Testa?',
+    answer: 'd',
     answers: [
-        '1989',
-        '1969',
-        '1966',
-        '1963'
+        'Taxista',
+        'Ingeniero',
+        'Electricista',
+        'Taxidermia'
     ]
 },
+
 {
     order: 6,
     question: '¿En qué año se presento el primer iphone?',
@@ -45,13 +46,47 @@ const questions = [
 },
 {
     order: 7,
-    question: '¿Cómo se escribe el apellido de Apu?',
+    question: '¿Cómo se escribe el apellido de Apu (Los Simpson)?',
     answer: 'a',
     answers: [
         'Nahasapeemapetilon',
         'Nahasa Peemapetilon',
         'Nahazapemapetilón',
         'De bon marché'
+    ]
+},
+{
+    order: 9,
+    question: 'Nombre del protagonista de la saga Kingsman',
+    answer: 'b',
+    answers: [
+        'Patachula McFly',
+        'Gary',
+        'Harry',
+        'John'
+    ]
+},
+
+{
+    order: 12,
+    question: '¿Cúal es el Pokémon número 93?',
+    answer: 'c',
+    answers: [
+        'Raticate',
+        'Gastly',
+        'Haunter',
+        'Gengar'
+    ]
+},
+{
+    order: 13,
+    question: '¿En que año murió Walt Disney?',
+    answer: 'c',
+    answers: [
+        '1989',
+        '1969',
+        '1966',
+        '1963'
     ]
 },
 {

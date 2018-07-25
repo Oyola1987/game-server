@@ -1,5 +1,5 @@
 import { connection, audio, video } from '../libs/common.js';
-import { responseOptions, range } from './utils.js';
+import { responseOptions, range, getState, setState } from './utils.js';
 
 let audioEl;
 
@@ -33,18 +33,51 @@ const wrongAnswer = (data) => {
     if (selectedItem !== data.answer) {
         audioDelayed('wrong', 7000, () => {
             addItemClass(selectedItem, 'bg-danger'); 
+            questionResolved(data.item, 'danger');
+            setState.wrong(data.item);
         });        
     }    
+};
+
+const questionResolved = (item, clrClass) => {
+    $(`#response-${item}`).removeClass('text-light').addClass(`text-${clrClass}`);
 };
 
 const rightAnswer = (data) => {    
     audioDelayed('rigth', 20000, () => {
         addItemClass(data.answer, 'bg-success');
+        questionResolved(data.item, 'success');
+        setState.success(data.item);
     }); 
 };
 
-const wildcardUsed = (wildcard) => {
+const launchCountdown = () => {
+    let counter = 60;
+    const el = $('#wildcard-countdown');
+
+    const interval = setInterval(() => { 
+        if(counter < 0) {
+            el.html('');
+            clearInterval(interval);
+        } else {
+            el.html(counter);
+            counter -= 1;
+        }
+    }, 1000);
+};
+
+const wildcardUsed = (wildcard, optionsToRemove) => {
+    setState.wildcardsUsed(wildcard);
     $(`#wildcard-${wildcard}`).addClass('used');
+    if(wildcard === 'phone') {
+        launchCountdown();
+    }
+
+    if(optionsToRemove){
+        optionsToRemove.forEach(item => {
+            $(`#option-${item}`).addClass('ghost');          
+        });
+    }
 };
 
 const showQuestion = (data) => {
@@ -62,6 +95,9 @@ const showQuestion = (data) => {
                 <p>${data.question}</p>
             </div>
             ${answers.join('')}
+            <div class="col-12 text-center question-number">
+               <h5>${data.item}</h5>
+            </div>
         </div>`);
 };
 
@@ -70,13 +106,23 @@ const hideQuestion = () => {
 };
 
 const createQuestionsStatus = () => {
+    const state = getState();
     const el = $('.responses-list');
+    const newRange = [...range];
+    newRange.reverse();
 
-    range.forEach(item => {
+    newRange.forEach(item => {
         const id = `response-${item}`;
+        let classText = 'white';
 
-        el.append(`<div class="col-12 text-left" id="${id}">
-            <span class="text-white">${item}</span>
+        if(state.success.includes(item)) {
+            classText = 'success';
+        } else if(state.wrong.includes(item)) {
+            classText = 'danger';
+        }
+
+        el.append(`<div class="col-12 text-left text-${classText}" id="${id}">
+            <span>${item}</span>
         </div>`);
     });
 };
@@ -119,10 +165,18 @@ const audioDelayed = (src, timeout, cb) => {
     setTimeout(cb, timeout);
 };
 
+const loadWildCards = () => {
+    const state = getState();
+    state.wildcardsUsed.forEach((wildcard) => {
+        $(`#wildcard-${wildcard}`).addClass('used');
+    });    
+};
+
 $(document).ready(function () {   
     // video('videos/intro');
 
     createQuestionsStatus();
+    loadWildCards();
 
     connection.listen('question', (data) => {
         console.log('question =>', data);
@@ -153,6 +207,6 @@ $(document).ready(function () {
 
     connection.listen('wildcard', (data) => {
         console.log('wildcard =>', data);
-        wildcardUsed(data.data);
+        wildcardUsed(data.data, data.optionsToRemove);
     });
 });

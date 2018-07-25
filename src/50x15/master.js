@@ -1,93 +1,7 @@
 import { connection } from '../libs/common.js';
-import { responseOptions, wildCardsIds, range } from './utils.js';
+import { responseOptions, wildCardsIds, range, getState, setState } from './utils.js';
 import { questions } from './questions.js';
  
-const detailsBtn = [{
-    text: 'Acierto',
-    class: 'success',
-    event: 'correct'
-}, {
-    text: 'Fallo',
-    class: 'danger',
-    event: 'wrong'
-}];
-
-let events = [];
-
-const clickEvent = () => {
-    events.forEach(item => {
-        $(`#${item.id}`).bind('click', () => {
-            connection.send({
-                event: item.event,
-                data: item.data
-            });
-
-            if (item.resolved) {
-                questionResolved(item.resolved, item.className);
-            }
-
-            if (item.return) {
-                $('#btns-detail').hide();
-                $('#btns-ask').show();
-            }           
-        });
-    });
-};
-
-const resultButtons = (number, options) => {
-    let content = '';
-
-    detailsBtn.forEach((item) => {
-        const id = `${item.class}${number}`;
-        const text = (item.class === 'success' ? `(${options.response}) ` : '') + `${item.text}`;
-
-        events.push({
-            id: id,
-            resolved: item.event === 'back' ? '' : number,
-            event: item.event,
-            data: {
-                item: number,
-                answer: options.response
-            },
-            className: item.class,
-            return: item.event === 'back'
-        });
-
-        content += `<div class="col-4 mt-5 text-center">
-            <button type="button" class="btn btn-${item.class} text-capitalize" id="${id}">${text}</button>
-        </div>`;
-    });
-
-    return content;
-};
-
-const createQuestions = () => {
-    const el = $('#btns-ask');
-
-    range.forEach(item => {
-        const id = `ask${item}`;
-
-        el.append(`<div class="col-2 mb-3 text-center"><button type="button" class="btn btn-light" id="${id}">${item}</button></div>`);
-
-        $(`#${id}`).bind('click', () => {
-            const msg = Object.assign({
-                event: 'question',
-                item: item
-            }, {
-                    question: questions[0].question,
-                    answers: questions[0].answers
-            });
-
-            el.hide();
-            showDetails(item, Object.assign({
-                response: questions[0].answer
-            }, msg));
-
-            connection.send(msg);
-        });
-    });
-};
-
 const alertConfirm = (text, cb) => {    
     if (confirm(text)) {
         cb();        
@@ -95,19 +9,45 @@ const alertConfirm = (text, cb) => {
 };
 
 const wildCards = () => {
+    const state = getState();
+
     wildCardsIds.forEach(item => {
         const id = `#wildcard-${item}`;
 
-        $(id).bind('click', () => {
-            alertConfirm(`¿Quieres usar el comodín "${item.toUpperCase()}"?`, () => {
-                connection.send({
-                    event: 'wildcard',
-                    data: item
-                });
+        if(state.wildcardsUsed.includes(item)) {            
+            $(id).addClass('used');
+        } else {
+            $(id).bind('click', () => {
+                alertConfirm(`¿Quieres usar el comodín "${item.toUpperCase()}"?`, () => {
+                    const question = getCurrentQuestion();
+                    let optionsToRemove = false;
 
-                $(id).unbind('click').addClass('used');
+                    if(item === '50') {
+                        let random = _.random(0, 3);
+
+                        if (responseOptions[random] === question.answer && random < 3) {
+                            random += 1;
+                        } else if (responseOptions[random] === question.answer && random === 3) {
+                            random = 0;
+                        }
+
+                        optionsToRemove = _.difference(responseOptions, [question.answer, responseOptions[random]]);
+                        optionsToRemove.forEach(item => {
+                            $(`#option-${item}`).unbind('click').addClass('ghost');          
+                        });
+                    }
+
+                    connection.send({
+                        event: 'wildcard',
+                        data: item,
+                        optionsToRemove: optionsToRemove
+                    });
+                    setState.wildcardsUsed(item);
+
+                    $(id).unbind('click').addClass('used');
+                });
             });
-        });
+        }       
     });
 };
 
@@ -131,12 +71,35 @@ const showQuestion = (data, answer) => {
         </div>`;
     });
 
-    el.html(`<div class="row mb-2 text-white">
+    el.html(`<div class="row mb-2 text-white" id="current-question-${data.item}">
             <div class="col-12 mt-2 text-center square square-bg">
                 <p>${data.question}</p>
             </div>
             ${answers.join('')}
+            <div class="col-12 text-center question-number">
+               <h5>${data.item}</h5>
+            </div>
         </div>`);
+};
+
+const questionResolved = (item, answer, isCorrect) => {
+    const clrClass = isCorrect ? 'success' : 'danger';
+
+    $(`#question-${item}`).removeClass('bg-light').addClass(`bg-${clrClass}`);
+
+    if(isCorrect) {
+        setState.success(item);
+    } else {
+        setState.wrong(item);
+    }    
+
+    connection.send({
+        event: isCorrect ? 'correct' : 'wrong',
+        data: {
+            item: item,
+            answer: answer
+        },
+    });
 };
 
 const listeningOptions = (options, answer) => {
@@ -146,21 +109,14 @@ const listeningOptions = (options, answer) => {
         el.bind('click', () => {
             if(el.hasClass('bg-warning')) {
                 alertConfirm(`¿Quieres que la opción "${option.toUpperCase()}" sea tu respuesta definitiva?`, () => {
-                    const optionSelected = el.attr('id').replace('option-', '');
-                    
-                    connection.send({
-                        event: optionSelected === answer ? 'correct' : 'wrong',
-                        data: {
-                            item: options.item,
-                            answer: answer
-                        },
-                    });
+                    const optionSelected = el.attr('id').replace('option-', '');                    
+
+                    questionResolved(options.item, answer, optionSelected === answer);
                 });
             } else {
                 alertConfirm(`¿Quieres elegir la opción: "${option.toUpperCase()}"?`, () => {
                     resetSelectedItem();
-                    el.addClass('bg-warning');
-                    el.removeClass('square-bg');
+                    el.addClass('bg-warning').removeClass('square-bg');
 
                     connection.send({
                         event: 'selected',
@@ -172,20 +128,42 @@ const listeningOptions = (options, answer) => {
     });
 };
 
+const getCurrentQuestion = (item) => {
+    const el = $('#question-contain > div');
+    const id = el.attr('id');
+    const questionItem = id && parseInt(id.replace('current-question-', ''), 10);
+    return getQuestion(questionItem);
+};
+
+const getQuestion = (item) => {
+    return questions.find((question) => {
+        return question.order === item;
+    });
+};
+
 const createQuestionsStatus = () => {
     const el = $('.questions-list');
+    const state = getState();
 
-    range.forEach(item => {
+    const newRange = [...range];
+    newRange.reverse();
+
+    newRange.forEach(item => {
         const id = `question-${item}`;
+        let textClass = 'light';
+
+        if(state.success.includes(item)) {
+            textClass = 'success';
+        } else if(state.wrong.includes(item)) {
+            textClass = 'danger';
+        }
 
         el.append(`<div class="col-12 text-left mt-2">
-            <button type="button" class="btn btn-light" id="${id}">${item}</button>
+            <button type="button" class="btn btn-${textClass}" id="${id}">${item}</button>
         </div>`);
 
         $(`#${id}`).bind('click', () => {
-            const quest = questions.find((question) => {
-                return question.order === item;
-            });
+            const quest = getQuestion(item);
 
             const msg = {
                 event: 'question',
@@ -215,7 +193,6 @@ const startBackButton = () => {
 };
 
 $(document).ready(function () {   
-//    createQuestions();    
     createQuestionsStatus();
 
     startBackButton();
