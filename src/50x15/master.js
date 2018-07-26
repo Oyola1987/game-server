@@ -8,6 +8,29 @@ const alertConfirm = (text, cb) => {
     } 
 };
 
+const getOptionsToRemove = (wildcardItem) => {
+    let optionsToRemove = false;
+
+    if (wildcardItem === '50') {
+        const question = getCurrentQuestion();
+
+        let random = _.random(0, 3);
+
+        if (responseOptions[random] === question.answer && random < 3) {
+            random += 1;
+        } else if (responseOptions[random] === question.answer && random === 3) {
+            random = 0;
+        }
+
+        optionsToRemove = _.difference(responseOptions, [question.answer, responseOptions[random]]);
+        optionsToRemove.forEach(item => {
+            $(`#option-${item}`).unbind('click').addClass('ghost');
+        });
+    }   
+
+    return optionsToRemove;
+};
+
 const wildCards = () => {
     const state = getState();
 
@@ -19,28 +42,10 @@ const wildCards = () => {
         } else {
             $(id).bind('click', () => {
                 alertConfirm(`¿Quieres usar el comodín "${item.toUpperCase()}"?`, () => {
-                    const question = getCurrentQuestion();
-                    let optionsToRemove = false;
-
-                    if(item === '50') {
-                        let random = _.random(0, 3);
-
-                        if (responseOptions[random] === question.answer && random < 3) {
-                            random += 1;
-                        } else if (responseOptions[random] === question.answer && random === 3) {
-                            random = 0;
-                        }
-
-                        optionsToRemove = _.difference(responseOptions, [question.answer, responseOptions[random]]);
-                        optionsToRemove.forEach(item => {
-                            $(`#option-${item}`).unbind('click').addClass('ghost');          
-                        });
-                    }
-
                     connection.send({
                         event: 'wildcard',
                         data: item,
-                        optionsToRemove: optionsToRemove
+                        optionsToRemove: getOptionsToRemove(item)
                     });
                     setState.wildcardsUsed(item);
 
@@ -141,6 +146,21 @@ const getQuestion = (item) => {
     });
 };
 
+const questionClicked = (item) => {
+    const quest = getQuestion(item);
+
+    const msg = {
+        event: 'question',
+        item: item,
+        question: quest.question,
+        answers: quest.answers
+    };
+
+    showQuestion(msg, quest.answer);
+    listeningOptions(msg, quest.answer);
+    connection.send(msg);
+};
+
 const createQuestionsStatus = () => {
     const el = $('.questions-list');
     const state = getState();
@@ -163,18 +183,7 @@ const createQuestionsStatus = () => {
         </div>`);
 
         $(`#${id}`).bind('click', () => {
-            const quest = getQuestion(item);
-
-            const msg = {
-                event: 'question',
-                item: item,
-                question: quest.question,
-                answers: quest.answers
-            };
-
-            showQuestion(msg, quest.answer);
-            listeningOptions(msg, quest.answer);
-            connection.send(msg);
+            questionClicked(item);
         });
     });
 };
