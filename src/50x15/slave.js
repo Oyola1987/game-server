@@ -173,7 +173,7 @@ const loadWildCards = () => {
 };
 
 $(document).ready(function () {   
-    // video('videos/intro');
+    video('videos/intro');
 
     createQuestionsStatus();
     loadWildCards();
