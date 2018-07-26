@@ -1,0 +1,17 @@
+body {
+    background-color: #66b4ff;    
+}
+
+.letter-item {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+}
+
+.letter-item .letter-content {
+    cursor: pointer;
+    width: 34px;
+    height: 34px;
+    border-radius: 17px;
+    border: 2px solid #fff;
+}
