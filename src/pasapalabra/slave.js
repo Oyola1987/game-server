@@ -32,9 +32,19 @@ const addLetters = (letters) => {
     circle(4.74);
 };
 
+const getLetterOfMaster = () => {
+    connection.send({
+        event: 'get-letters'
+    }); 
+};
+
 $(document).ready(function () {
+    video('videos/intro');
+
     connection.listen('letters', (data) => {
         console.log('letters =>', data);
         addLetters(data.data);
     });
+
+    getLetterOfMaster();
 });

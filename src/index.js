@@ -1,14 +1,14 @@
 import Connection from './libs/connection.js';
 
-const connection = new Connection(() => {
-    connection.send({
-        event: 'index'
-    });
-});
+const connection = new Connection();
 
 $(document).ready(function() {   
     const games = ['50x15', 'pasapalabra'];
     const rolls = ['master', 'slave'];
+
+    connection.send({
+        event: 'index'
+    });
 
     connection.listen('redirect', (data) => {
         connection.close();
