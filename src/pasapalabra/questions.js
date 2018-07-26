@@ -82,8 +82,8 @@ const questions = {
         answer: 'Rick Sánchez'
     },
     s: {
-        question: '',
-        answer: ''
+        question: 'Película en cuyo nombre aparece la palabra "caída" en inglés protagonizada por un famoso espía',
+        answer: 'Snowfall Ho Ho 7'
     },
 
 
