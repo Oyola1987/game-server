@@ -181,7 +181,7 @@ const createQuestionsStatus = () => {
         }
 
         el.append(`<div class="col-${col} text-left mt-2">
-            <button type="button" class="btn btn-${textClass}" id="${id}">${item}</button>
+            <button type="button" class="btn btn-lg btn-${textClass}" id="${id}">${item}</button>
         </div>`);
 
         $(`#${id}`).bind('click', () => {
