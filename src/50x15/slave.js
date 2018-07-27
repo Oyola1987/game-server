@@ -31,7 +31,7 @@ const wrongAnswer = (data) => {
     const selectedItem = $(`.bg-warning`).attr('id').replace('option-', '');
 
     if (selectedItem !== data.answer) {
-        audioDelayed('wrong', 7000, () => {
+        audioDelayed('wrong', 6000, () => {
             addItemClass(selectedItem, 'bg-danger'); 
             questionResolved(data.item, 'danger');
             setState.wrong(data.item);
@@ -108,10 +108,8 @@ const hideQuestion = () => {
 const createQuestionsStatus = () => {
     const state = getState();
     const el = $('.responses-list');
-    const newRange = [...range];
-    newRange.reverse();
 
-    newRange.forEach(item => {
+    range.forEach(item => {
         const id = `response-${item}`;
         let classText = 'white';
 
