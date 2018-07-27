@@ -19,7 +19,7 @@ const checkFinished = () => {
     }
 };
 
-const questionSuccess = (letter, className, event, done) => {
+const questionSuccess = (letter, answer, className, event, done) => {
     const el = $(`#question-${letter}`);
 
     if (el.hasClass('selected')) {
@@ -28,7 +28,8 @@ const questionSuccess = (letter, className, event, done) => {
 
         connection.send({
             event: event,
-            data: letter
+            data: letter,
+            answer: answer
         });
 
         el.addClass('bg-' + className);
@@ -37,13 +38,13 @@ const questionSuccess = (letter, className, event, done) => {
     }
 };
 
-const listenClick = (letter) => {
+const listenClick = (letter, answer) => {
     $(`#question-${letter} #success`).bind('click', () => {
-        questionSuccess(letter, 'success', 'success', nextQuestion);
+        questionSuccess(letter, answer, 'success', 'success', nextQuestion);
     });
 
     $(`#question-${letter} #wrong`).bind('click', () => {
-        questionSuccess(letter, 'danger', 'wrong', () => {
+        questionSuccess(letter, answer, 'danger', 'wrong', () => {
             $(`#pause`).click();
         });
     });
@@ -73,7 +74,7 @@ const buildQuestions = () => {
             </div>            
         </div>`);
 
-        listenClick(letter);
+        listenClick(letter, question.answer);
     });
 };
 
@@ -98,6 +99,10 @@ const showTime = () => {
         prettyTime = date.toISOString().substr(14, 5);
     } else {
         clearInterval(interval);
+        $(`#pause`).click();
+        connection.send({
+            event: 'time-ended'
+        });
     }
 
     connection.send({

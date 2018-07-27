@@ -38,19 +38,37 @@ const getLetterOfMaster = () => {
     }); 
 };
 
-const resolveLetter = (letter, className) => {
+let timeout;
+
+const resolveLetter = (letter, className, answer) => {
+    const alertEl = $(`#anwser-alert`);
+    alertEl.html(`<span class="bg-primary d-inline-block">${letter.toUpperCase()}: ${answer}</span>`);
+
+    if(timeout) {
+        clearTimeout(timeout);
+    }
+
+    timeout = setTimeout(() => {
+        const el = alertEl.find('span');
+        el.fadeOut(2000, () => {
+            el.remove();
+        }); 
+    }, 3000);
+
     $(`#letter-${letter}`).removeClass('selected-letter');
     $(`#letter-${letter} .letter-content`).addClass('bg-' + className).removeClass('bg-primary');
 };
 
-const wrongLetter = (letter) => {
-    resolveLetter(letter, 'danger');
+const wrongLetter = (letter, answer) => {
+    resolveLetter(letter, 'danger', answer);
+    audio(`./audios/lose`);
 };
 
-const successLetter = (letter) => {
-    resolveLetter(letter, 'success');
+const successLetter = (letter, answer) => {
+    resolveLetter(letter, 'success', answer);
     const successQuestions = $('.letter-item .letter-content.bg-success').length;
     $('#question-correct').html(successQuestions);
+    audio(`./audios/win`);
 };
 
 const selectedLetter = (letter) => {
@@ -74,12 +92,12 @@ $(document).ready(function () {
 
     connection.listen('success', (data) => {
         console.log('success =>', data);
-        successLetter(data.data);
+        successLetter(data.data, data.answer);
     });
 
     connection.listen('wrong', (data) => {
         console.log('wrong =>', data);
-        wrongLetter(data.data);
+        wrongLetter(data.data, data.answer);
     });
 
     connection.listen('time', (data) => {
@@ -95,6 +113,11 @@ $(document).ready(function () {
     connection.listen('pause', (data) => {
         console.log('pause =>', data);
         nothingSelected();
+    });
+
+    connection.listen('time-ended', (data) => {
+        console.log('time-ended =>', data);
+        audio(`./audios/timeout`);
     });
 
     getLetterOfMaster();
