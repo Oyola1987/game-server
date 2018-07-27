@@ -1,4 +1,4 @@
-# movie-party
+# game-server using web socket
 
 #### Required `node`
 
