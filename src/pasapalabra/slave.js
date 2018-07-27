@@ -83,7 +83,7 @@ const nothingSelected = () => {
 $(document).ready(function () {
     const timeEl = $('#time-slave');
 
-    // video('videos/intro');
+    video('videos/intro');
 
     connection.listen('letters', (data) => {
         console.log('letters =>', data);

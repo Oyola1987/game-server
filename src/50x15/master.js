@@ -165,11 +165,9 @@ const createQuestionsStatus = () => {
     const el = $('.questions-list');
     const state = getState();
 
-    const newRange = [...range];
-    newRange.reverse();
-
-    newRange.forEach(item => {
+    range.forEach((item, index) => {
         const id = `question-${item}`;
+        const col = (index + 1) % 3 === 0 ? '10' : '1';
         let textClass = 'light';
 
         if(state.success.includes(item)) {
@@ -182,7 +180,7 @@ const createQuestionsStatus = () => {
             textClass = 'dark';
         }
 
-        el.append(`<div class="col-12 text-left mt-2">
+        el.append(`<div class="col-${col} text-left mt-2">
             <button type="button" class="btn btn-${textClass}" id="${id}">${item}</button>
         </div>`);
 
