@@ -38,12 +38,63 @@ const getLetterOfMaster = () => {
     }); 
 };
 
+const resolveLetter = (letter, className) => {
+    $(`#letter-${letter}`).removeClass('selected-letter');
+    $(`#letter-${letter} .letter-content`).addClass('bg-' + className).removeClass('bg-primary');
+};
+
+const wrongLetter = (letter) => {
+    resolveLetter(letter, 'danger');
+};
+
+const successLetter = (letter) => {
+    resolveLetter(letter, 'success');
+    const successQuestions = $('.letter-item .letter-content.bg-success').length;
+    $('#question-correct').html(successQuestions);
+};
+
+const selectedLetter = (letter) => {
+    nothingSelected();
+    $(`#letter-${letter}`).addClass('selected-letter');
+};
+
+const nothingSelected = () => {
+    $(`.letter-item.selected-letter`).removeClass('selected-letter');
+};
+
 $(document).ready(function () {
+    const timeEl = $('#time-slave');
+
     // video('videos/intro');
 
     connection.listen('letters', (data) => {
         console.log('letters =>', data);
         addLetters(data.data);
+    });
+
+    connection.listen('success', (data) => {
+        console.log('success =>', data);
+        successLetter(data.data);
+    });
+
+    connection.listen('wrong', (data) => {
+        console.log('wrong =>', data);
+        wrongLetter(data.data);
+    });
+
+    connection.listen('time', (data) => {
+        console.log('time =>', data);
+        timeEl.html(data.data);
+    });
+
+    connection.listen('selected', (data) => {
+        console.log('selected =>', data);
+        selectedLetter(data.data);
+    });
+
+    connection.listen('pause', (data) => {
+        console.log('pause =>', data);
+        nothingSelected();
     });
 
     getLetterOfMaster();

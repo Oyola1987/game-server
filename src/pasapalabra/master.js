@@ -8,6 +8,10 @@ let time = 120;
 let currentItem = lettersWithoutResolve[0];
 let interval;
 
+const showNextLetter = (item) => {
+    $(`.controls-footer .letter`).html(`(${item.toUpperCase()})`);
+};
+
 const checkFinished = () => {
     if (!lettersWithoutResolve.length) {
         clearInterval(interval);
@@ -15,13 +19,17 @@ const checkFinished = () => {
     }
 };
 
-const questionSuccess = (letter, className) => {
+const questionSuccess = (letter, className, event, done) => {
     const el = $(`#question-${letter}`);
 
     if (el.hasClass('selected')) {
-        nextQuestion();
-
+        done();
         lettersWithoutResolve.splice(lettersWithoutResolve.indexOf(letter), 1);
+
+        connection.send({
+            event: event,
+            data: letter
+        });
 
         el.addClass('bg-' + className);
         $(`#question-${letter} .btn`).unbind('click').remove();
@@ -31,11 +39,13 @@ const questionSuccess = (letter, className) => {
 
 const listenClick = (letter) => {
     $(`#question-${letter} #success`).bind('click', () => {
-        questionSuccess(letter, 'success');
+        questionSuccess(letter, 'success', 'success', nextQuestion);
     });
 
     $(`#question-${letter} #wrong`).bind('click', () => {
-        questionSuccess(letter, 'danger');
+        questionSuccess(letter, 'danger', 'wrong', () => {
+            $(`#pause`).click();
+        });
     });
 };
 
@@ -89,7 +99,12 @@ const showTime = () => {
     } else {
         clearInterval(interval);
     }
-    
+
+    connection.send({
+        event: 'time',
+        data: prettyTime
+    });
+
     $('#time').html(prettyTime);
 };
 
@@ -98,10 +113,17 @@ const sendLetters = () => {
         event: 'letters',
         data: Object.keys(questions)
     });
+
+    showTime();
 };
 
 const markCurrentItem = () => {
     const el = $(`#question-${currentItem}`);
+
+    connection.send({
+        event: 'selected',
+        data: currentItem
+    });
 
     body.animate({
         scrollTop: el.offset().top + 'px'
@@ -114,12 +136,19 @@ const unmarkCurrentItem = () => {
     $(`#question-${currentItem}`).removeClass('selected');
 };
 
+const getNextAvailableLetter = () => {
+    let index = lettersWithoutResolve.indexOf(currentItem) + 1;
+    index = index > lettersWithoutResolve.length - 1 ? 0 : index;
+    return lettersWithoutResolve[index];
+};
+
 const nextQuestion = (avoidMark) => {
     if (lettersWithoutResolve.length) {
-        let index = lettersWithoutResolve.indexOf(currentItem) + 1;
         unmarkCurrentItem();
-        index = index > lettersWithoutResolve.length - 1 ? 0 : index;
-        currentItem = lettersWithoutResolve[index];
+        currentItem = getNextAvailableLetter();
+
+        showNextLetter(getNextAvailableLetter());
+
         if (!avoidMark) {
             markCurrentItem();
         }        
@@ -138,6 +167,7 @@ const initListeners = () => {
 
     elPlay.bind('click', () => {
         markCurrentItem();
+        showNextLetter(getNextAvailableLetter());
         elPlay.addClass(hide);
         elPause.removeClass(hide);
         elNext.removeClass(hide);
@@ -148,7 +178,12 @@ const initListeners = () => {
     });
 
     elPause.bind('click', () => {
+        connection.send({
+            event: 'pause'
+        });
+
         nextQuestion(true);
+        showNextLetter(currentItem);
         elPause.addClass(hide);
         elNext.addClass(hide);
         elPlay.removeClass(hide);
@@ -162,6 +197,6 @@ $(document).ready(function () {
 
     buildQuestions();
     listenTimeBtns();
-    showTime();
+    showNextLetter(currentItem);    
     initListeners();
 });

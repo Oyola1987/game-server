@@ -22,24 +22,24 @@ const questions = {
 
 
     f: {
-        question: '',
-        answer: ''
+        question: 'La serie más grande de todos los tiempos a la que se la intenta hacer homenaje siempre que nos juntamos',
+        answer: 'Friends'
     },
     g: {
-        question: '',
-        answer: ''
+        question: 'Compañero y aprendíz de Saitama en la serie One punch man',
+        answer: 'Genos'
     },
     h: {
-        question: '',
-        answer: ''
+        question: 'Colegio en el que unos frikis hacen cosas raras y juegan a un deporte absurdo',
+        answer: 'Hogwarts'
     },
     i: {
         question: '',
         answer: ''
     },
     j: {
-        question: '',
-        answer: ''
+        question: 'Pelicula en la que se homenajea a Robin Williams mediante la frase “Alan Parrish estuvo aquí”',
+        answer: 'Jumanji: Bienvenidos a la jungla'
     },
 
 
@@ -82,8 +82,8 @@ const questions = {
         answer: 'Rick Sánchez'
     },
     s: {
-        question: 'Película en cuyo nombre aparece la palabra "caída" en inglés protagonizada por un famoso espía',
-        answer: 'Snowfall Ho Ho 7'
+        question: 'Nombre de canción basada en el incesante picoteo a los transeúntes de cierta ave',
+        answer: 'Seagulls (stop It now)'
     },
 
 
@@ -92,8 +92,8 @@ const questions = {
         answer: 'Traje'
     },
     u: {
-        question: '',
-        answer: ''
+        question: 'Superhéroe más grande que muchos edificios',
+        answer: 'Ultraman'
     },
     v: {
         question: 'El Capi y Iron Man lo son',
@@ -104,7 +104,7 @@ const questions = {
         answer: 'Welele'
     },
     x: {
-        question: '',
+        question: 'Nombre de la princesa guerrera',
         answer: 'Xena'
     },
 

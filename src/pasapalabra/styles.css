@@ -29,12 +29,26 @@ video {
     border: 2px solid #fff;
 }
 
-.controls-footer {
-    border-top: 2px solid #ccc;
+.letter-item.selected-letter .letter-content {
+    animation-name: flicker;
+    animation-duration: 1s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    -webkit-animation-name: flicker;
+    -webkit-animation-duration: 1s;
+    -webkit-animation-timing-function: linear;
+    -webkit-animation-iteration-count: infinite;
+}
+
+.controls-footer {    
     position: fixed;
     bottom: 0;
     left: 0;
     z-index:5;
+}
+
+.footer-border {
+    border-top: 2px solid #ccc;
 }
 
 .questions-list {
@@ -52,4 +66,60 @@ video {
 .ghost {
     opacity: 0 !important;
     background-color: transparent !important;
+}
+
+#time-slave {
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: 3px solid #fff;
+}
+
+#question-correct {
+    line-height: 60px;
+    width: 70px;
+    height: 70px;
+    border-radius: 35px;
+    border: 3px solid #fff;
+}
+
+@-moz-keyframes flicker {
+    0% {
+        opacity: 1.0;
+    }
+
+    50% {
+        opacity: 0.0;
+    }
+
+    100% {
+        opacity: 1.0;
+    }
+}
+
+@-webkit-keyframes flicker {
+    0% {
+        opacity: 1.0;
+    }
+
+    50% {
+        opacity: 0.0;
+    }
+
+    100% {
+        opacity: 1.0;
+    }
+}
+
+@keyframes flicker {
+    0% {
+        opacity: 1.0;
+    }
+
+    50% {
+        opacity: 0.0;
+    }
+
+    100% {
+        opacity: 1.0;
+    }
 }

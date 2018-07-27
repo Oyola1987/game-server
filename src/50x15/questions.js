@@ -32,7 +32,17 @@ const questions = [
         'Taxidermia'
     ]
 },
-
+{
+    order: 5,
+    question: 'Película por la que Leonardo DiCaprio ganó por fin el Oscar a mejor actor en 2016',
+    answer: 'd',
+    answers: [
+        'El malnacido',
+        'El retorcido',
+        'El resurgido',
+        'El renacido'
+    ]
+},
 {
     order: 6,
     question: '¿En qué año se presento el primer iphone?',
@@ -51,7 +61,7 @@ const questions = [
     answers: [
         'Nahasapeemapetilon',
         'Nahasa Peemapetilon',
-        'Nahazapemapetilón',
+        'Nahazapemapetilon',
         'De bon marché'
     ]
 },
@@ -66,7 +76,17 @@ const questions = [
         'John'
     ]
 },
-
+{
+    order: 10,
+    question: '¿Como se llama el perro de Fry en la serie futurama?',
+    answer: 'a',
+    answers: [
+        'Seymour Diera',
+        'Sinlad Drido',
+        'Estey Mouviejo',
+        'Soiva Gabundo'
+    ]
+},
 {
     order: 12,
     question: '¿Cúal es el Pokémon número 93?',
@@ -87,6 +107,17 @@ const questions = [
         '1969',
         '1966',
         '1963'
+    ]
+},
+{
+    order: 14,
+    question: '¿A cuantas personas asesina Ligth Yagami a lo largo de toda la serie de death note?',
+    answer: 'c',
+    answers: [
+        '< 10.000',
+        'Entre 20.000 y 50.000',
+        'Entre 100.000 y 250.000',
+        '> 1.000.000'
     ]
 },
 {
