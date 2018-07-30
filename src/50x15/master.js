@@ -167,7 +167,7 @@ const createQuestionsStatus = () => {
 
     range.forEach((item, index) => {
         const id = `question-${item}`;
-        const col = (index + 1) % 3 === 0 ? '10' : '1';
+        const col = (index + 1) % 3 === 0 ? '10 mb-2' : '1';
         let textClass = 'light';
 
         if(state.success.includes(item)) {

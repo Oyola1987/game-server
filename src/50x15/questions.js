@@ -45,13 +45,13 @@ const questions = [
 },
 {
     order: 6,
-    question: '¿En qué año se presento el primer iphone?',
+    question: '¿En qué año se estreno la pélícula "Harry Potter y la piedra filosofal"?',
     answer: 'd',
     answers: [
-        '2006',
-        '2008',
+        '1999',
+        '2002',
         '2005',
-        '2007'
+        '2001'
     ]
 },
 {

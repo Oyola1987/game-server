@@ -1,14 +1,14 @@
 const questions = {
     a: {
         question: 'Película donde la protagonista persigue un conejo',
-        answer: 'Alicia en el país de las Marranadillas'
+        answer: 'Alicia en el país de las pornomaravillas'
     },
     b: {
         question: 'Película donde el protagonista es un cerdo',
         answer: 'Babe (el Cerdito Caliente)'
     },
     c: {
-        question: 'Nombre del protagonista muerto de una película',
+        question: 'Nombre del protagonista muerto de una película infantil',
         answer: 'Casper'
     },
     d: {
@@ -34,8 +34,8 @@ const questions = {
         answer: 'Hogwarts'
     },
     i: {
-        question: '',
-        answer: ''
+        question: 'Completa la frase: Me llamo ______ _______, tu mataste a mi padre, prepárate para morir.',
+        answer: 'Íñigo Montoya'
     },
     j: {
         question: 'Pelicula en la que se homenajea a Robin Williams mediante la frase “Alan Parrish estuvo aquí”',
@@ -104,7 +104,7 @@ const questions = {
         answer: 'Welele'
     },
     x: {
-        question: 'Nombre de la princesa guerrera',
+        question: 'Nombre de la princesa guerrera interpretada por Lucy Lawless',
         answer: 'Xena'
     },
 
