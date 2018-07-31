@@ -176,10 +176,6 @@ const createQuestionsStatus = () => {
             textClass = 'danger';
         }
 
-        if (!getQuestion(item)) {
-            textClass = 'dark';
-        }
-
         el.append(`<div class="col-${col} text-left mt-2">
             <button type="button" class="btn btn-lg btn-${textClass}" id="${id}">${item}</button>
         </div>`);

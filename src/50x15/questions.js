@@ -22,6 +22,17 @@ const questions = [
     ]
 },
 {
+    order: 3,
+    question: 'Bender de futurama, ¿siempre ha querido ser?',
+    answer: 'a',
+    answers: [
+        'Cantante de folk',
+        'Doblador',
+        'Protagonista en una telenovela',
+        'Repartidor'
+    ]
+},
+{
     order: 4,
     question: '¿A qué se dedica Chuck Testa?',
     answer: 'd',
@@ -56,6 +67,17 @@ const questions = [
 },
 {
     order: 7,
+    question: '¿Como se llama el actor de Willow, el cual también ha estado muy ligado a las películas de Lucasfilm?',
+    answer: 'b',
+    answers: [
+        'Patrick Swain',
+        'Warwick Davis',
+        'Lauren Hashian',
+        'Dwayne Johnson'
+    ]
+},
+{
+    order: 8,
     question: '¿Cómo se escribe el apellido de Apu (Los Simpson)?',
     answer: 'a',
     answers: [
@@ -88,13 +110,24 @@ const questions = [
     ]
 },
 {
-    order: 12,
-    question: '¿Cúal es el Pokémon número 93?',
+    order: 11,
+    question: 'En el programa de televisión Keeping Up with the Kardashians: de los 8 personajes protagonistas, ¿cuántos nombres contienen la letra K?',
     answer: 'c',
     answers: [
+        '3',
+        '5',
+        '6',
+        '8'
+    ]
+},
+{
+    order: 12,
+    question: '¿Cúal es el Pokémon número 93?',
+    answer: 'b',
+    answers: [
         'Raticate',
-        'Gastly',
         'Haunter',
+        'Gastly',
         'Gengar'
     ]
 },

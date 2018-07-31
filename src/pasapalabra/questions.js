@@ -44,24 +44,24 @@ const questions = {
 
 
     k: {
-        question: '',
-        answer: ''
+        question: 'Película de ciencia ficción estadounidense de 2001 dirigida por Iain Softley y protagonizada por Kevin Spacey, Jeff Bridges, Mary McCormack y Alfre Woodard',
+        answer: 'K-pax'
     },
     l: {
-        question: '',
-        answer: ''
+        question: 'En inglés dicese de la persona que se casa',
+        answer: 'Loser'
     },
     m: {
         question: '',
         answer: ''
     },
     n: {
-        question: '',
-        answer: ''
+        question: 'Persona que se casa por amor',
+        answer: 'Nadie'
     },
     'ñ': {
-        question: '',
-        answer: ''
+        question: 'Contiene la Ñ, tras 2 años de casado es lo que toca',
+        answer: 'Niños'
     },
 
 
