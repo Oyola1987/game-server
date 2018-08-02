@@ -52,8 +52,8 @@ const questions = {
         answer: 'Loser'
     },
     m: {
-        question: '',
-        answer: ''
+        question: 'Contiene la M, Bebida verde de futurama',
+        answer: 'Slurm'
     },
     n: {
         question: 'Persona que se casa por amor',
