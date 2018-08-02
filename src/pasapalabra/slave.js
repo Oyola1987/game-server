@@ -21,6 +21,10 @@ const circle = (angle) => {
     })
 };
 
+const centeredLetters = () => {
+    circle(4.74);
+};
+
 const addLetters = (letters) => {
     const html = letters.map((item) => {
         return `<div class="letter-item text-center" id="letter-${item}">
@@ -29,7 +33,7 @@ const addLetters = (letters) => {
     });
 
     $('#content-letters').html(html);
-    circle(4.74);
+    centeredLetters();
 };
 
 const getLetterOfMaster = () => {
@@ -119,6 +123,8 @@ $(document).ready(function () {
         console.log('time-ended =>', data);
         audio(`./audios/timeout`);
     });
+
+    $(window).on('resize', _.debounce(centeredLetters, 150));
 
     getLetterOfMaster();
 });
