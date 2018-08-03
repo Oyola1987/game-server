@@ -4,7 +4,7 @@ const _ = require('lodash');
 const express = require('express');
 const app = express();
 const internalIp = require('internal-ip');
-const ip = internalIp.v4.sync();
+const ip = process.argv.includes('ip') ? internalIp.v4.sync() : 'localhost';
 
 const connections = [];
 
