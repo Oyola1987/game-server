@@ -52,8 +52,8 @@ const questions = {
         answer: 'Loser'
     },
     m: {
-        question: 'Contiene la M, Bebida verde de futurama',
-        answer: 'Slurm'
+        question: 'Tema de la serie "la que se avecina" basada en una canción creada en Corea',
+        answer: 'Mandanga Style'
     },
     n: {
         question: 'Persona que se casa por amor',
