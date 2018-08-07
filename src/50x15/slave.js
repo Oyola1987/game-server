@@ -126,12 +126,12 @@ const createQuestionsStatus = () => {
 };
 
 const repeat = () => {
-    audioEl.onended = () => {
-        if (audioEl) {           
-            audioEl.play();
-            repeat();
-        }
-    };
+    //audioEl.onended = () => {
+    //    if (audioEl) {           
+    //        audioEl.play();
+    //        repeat();
+    //    }
+    //};
 };
 
 const startAudio = (item) => {
@@ -146,7 +146,7 @@ const startAudio = (item) => {
     }
 
     removeAudio();
-    audioEl = audio(`./audios/${audioFile}`);
+    // audioEl = audio(`./audios/${audioFile}`);
     repeat();
 };
 
@@ -159,7 +159,7 @@ const removeAudio = () => {
 
 const audioDelayed = (src, timeout, cb) => {
     removeAudio();
-    audio(`./audios/${src}`);
+    // audio(`./audios/${src}`);
     setTimeout(cb, timeout);
 };
 
@@ -171,7 +171,7 @@ const loadWildCards = () => {
 };
 
 $(document).ready(function () {   
-    video('videos/intro');
+    // video('videos/intro');
 
     createQuestionsStatus();
     loadWildCards();

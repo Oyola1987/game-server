@@ -65,14 +65,14 @@ const resolveLetter = (letter, className, answer) => {
 
 const wrongLetter = (letter, answer) => {
     resolveLetter(letter, 'danger', answer);
-    audio(`./audios/lose`);
+    // audio(`./audios/lose`);
 };
 
 const successLetter = (letter, answer) => {
     resolveLetter(letter, 'success', answer);
     const successQuestions = $('.letter-item .letter-content.bg-success').length;
     $('#question-correct').html(successQuestions);
-    audio(`./audios/win`);
+    // audio(`./audios/win`);
 };
 
 const selectedLetter = (letter) => {
@@ -87,7 +87,7 @@ const nothingSelected = () => {
 $(document).ready(function () {
     const timeEl = $('#time-slave');
 
-    video('videos/intro');
+    // video('videos/intro');
 
     connection.listen('letters', (data) => {
         console.log('letters =>', data);
@@ -121,7 +121,7 @@ $(document).ready(function () {
 
     connection.listen('time-ended', (data) => {
         console.log('time-ended =>', data);
-        audio(`./audios/timeout`);
+        // audio(`./audios/timeout`);
     });
 
     $(window).on('resize', _.debounce(centeredLetters, 150));
